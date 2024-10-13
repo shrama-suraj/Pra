@@ -1,0 +1,89 @@
+print('prac1')
+def encrypt(text, shift):
+   # for c in text:
+        return ''.join(
+        chr((ord(c) - 65 + shift) % 26 + 65)
+         if c.isupper() else
+        chr((ord(c) - 97+ shift) % 26 + 97) 
+            if c.islower() else c
+        for c in text
+        )
+shift=3
+text = input("Enter text to encrypt: ")
+#shift = 3
+print("Encrypted text:", encrypt(text, shift))
+
+
+#prac2
+print('pract2')
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import binascii
+keyPair = RSA.generate(1024)
+pubKey = keyPair.publickey()
+n=hex(pubKey.n)
+e=hex(pubKey.e)
+print("Public key : )")
+print(n)
+print(e)
+pubKeyPEM = pubKey.exportKey()
+print(pubKeyPEM.decode('ascii'))
+en=hex(pubKey.n)
+d=hex(keyPair.d)
+print("Private key : )")
+print(en)
+print(d)
+privKeyPEM = keyPair.exportKey()
+print(privKeyPEM.decode('ascii'))
+omsg ='Ismile Academy'
+msg=b'omsg'
+encryptor = PKCS1_OAEP.new(pubKey)
+encrypted = encryptor.encrypt(msg)
+result = binascii.hexlify(encrypted)
+print("Encrypted:",result[1:])
+#print("Encrypted:", binascii.hexlify(encrypted))
+
+
+#prac3
+print('pract3')
+import hashlib
+a = input('Enter the value to encode: ')
+result = hashlib.sha1(a.encode())
+print('The hexadecimal equivalent of SHA1 is:')
+print(result.hexdigest())
+
+#prac4
+print('pract4')
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
+key = RSA.generate(2048)
+public_key = key.publickey()
+message = "Ismile Academy"
+message_bytes = message.encode()
+hash_message = SHA256.new(message_bytes)
+signature = pkcs1_15.new(key).sign(hash_message)
+try:
+    pkcs1_15.new(public_key).verify(hash_message, signature)
+    print("Signature is valid.")
+except (ValueError, TypeError):
+    print("Signature is invalid.")
+   
+#prac5
+print('pract5]')
+from random import randint 
+if __name__ == '__main__':
+    p = 23
+    g = 9
+    print('The value of p is = %d' % p)
+    print('The value of g is = %d' % g)
+    a = 4  
+    print('Secret number of Alice is: %d' % a)
+    b = 6 
+    print('Secret number of Bob is: %d' % b)
+    x = pow(g, a, p)  
+    y = pow(g, b, p)  
+    ka = pow(y, a, p)  
+    kb = pow(x, b, p) 
+    print('secret Key of Alice is: %d' % ka)
+    print('secret Key of Bob is: %d' % kb)
